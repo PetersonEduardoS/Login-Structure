@@ -1,0 +1,331 @@
+{
+  "Version": 1,
+  "Hash": "HIdCnoyNPgpnH1QRbz3J1a+V4os3YQY2UmlwVdkaHGI=",
+  "Source": "LoginAPI",
+  "BasePath": "_content/LoginAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "LoginAPI\\wwwroot",
+      "Source": "LoginAPI",
+      "ContentRoot": "C:\\Users\\Eduardo\\Desktop\\Estudos - Backfront-end\\LoginAPI\\wwwroot\\",
+      "BasePath": "_content/LoginAPI",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\Eduardo\\Desktop\\Estudos - Backfront-end\\LoginAPI\\wwwroot\\admin.html",
+      "SourceId": "LoginAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Eduardo\\Desktop\\Estudos - Backfront-end\\LoginAPI\\wwwroot\\",
+      "BasePath": "_content/LoginAPI",
+      "RelativePath": "admin#[.{fingerprint}]?.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "esqo6i2kc1",
+      "Integrity": "ngu2X2DGa5EA0MfRVgJaNIAClYFAqxhudG0GfPPQmME=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\admin.html"
+    },
+    {
+      "Identity": "C:\\Users\\Eduardo\\Desktop\\Estudos - Backfront-end\\LoginAPI\\wwwroot\\index.html",
+      "SourceId": "LoginAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Eduardo\\Desktop\\Estudos - Backfront-end\\LoginAPI\\wwwroot\\",
+      "BasePath": "_content/LoginAPI",
+      "RelativePath": "index#[.{fingerprint}]?.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "xbisdagby3",
+      "Integrity": "M18I6Aeaekiv8RRwycFACvKmuxi2CgS9cEcBSRzQMBA=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\index.html"
+    },
+    {
+      "Identity": "C:\\Users\\Eduardo\\Desktop\\Estudos - Backfront-end\\LoginAPI\\wwwroot\\styles.css",
+      "SourceId": "LoginAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Eduardo\\Desktop\\Estudos - Backfront-end\\LoginAPI\\wwwroot\\",
+      "BasePath": "_content/LoginAPI",
+      "RelativePath": "styles#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "hvhjakbvxp",
+      "Integrity": "w5Q4w7X6vbqZlQMd+Ggunn+7bM4K7KaL4jBZZ+BKVoU=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\styles.css"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "admin.esqo6i2kc1.html",
+      "AssetFile": "C:\\Users\\Eduardo\\Desktop\\Estudos - Backfront-end\\LoginAPI\\wwwroot\\admin.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "6962"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ngu2X2DGa5EA0MfRVgJaNIAClYFAqxhudG0GfPPQmME=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 02 May 2025 12:31:52 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "esqo6i2kc1"
+        },
+        {
+          "Name": "label",
+          "Value": "admin.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-ngu2X2DGa5EA0MfRVgJaNIAClYFAqxhudG0GfPPQmME="
+        }
+      ]
+    },
+    {
+      "Route": "admin.html",
+      "AssetFile": "C:\\Users\\Eduardo\\Desktop\\Estudos - Backfront-end\\LoginAPI\\wwwroot\\admin.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "6962"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ngu2X2DGa5EA0MfRVgJaNIAClYFAqxhudG0GfPPQmME=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 02 May 2025 12:31:52 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-ngu2X2DGa5EA0MfRVgJaNIAClYFAqxhudG0GfPPQmME="
+        }
+      ]
+    },
+    {
+      "Route": "index.html",
+      "AssetFile": "C:\\Users\\Eduardo\\Desktop\\Estudos - Backfront-end\\LoginAPI\\wwwroot\\index.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5459"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"M18I6Aeaekiv8RRwycFACvKmuxi2CgS9cEcBSRzQMBA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 02 May 2025 12:17:32 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-M18I6Aeaekiv8RRwycFACvKmuxi2CgS9cEcBSRzQMBA="
+        }
+      ]
+    },
+    {
+      "Route": "index.xbisdagby3.html",
+      "AssetFile": "C:\\Users\\Eduardo\\Desktop\\Estudos - Backfront-end\\LoginAPI\\wwwroot\\index.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5459"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"M18I6Aeaekiv8RRwycFACvKmuxi2CgS9cEcBSRzQMBA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 02 May 2025 12:17:32 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "xbisdagby3"
+        },
+        {
+          "Name": "label",
+          "Value": "index.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-M18I6Aeaekiv8RRwycFACvKmuxi2CgS9cEcBSRzQMBA="
+        }
+      ]
+    },
+    {
+      "Route": "styles.css",
+      "AssetFile": "C:\\Users\\Eduardo\\Desktop\\Estudos - Backfront-end\\LoginAPI\\wwwroot\\styles.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3409"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"w5Q4w7X6vbqZlQMd+Ggunn+7bM4K7KaL4jBZZ+BKVoU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 02 May 2025 12:27:38 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-w5Q4w7X6vbqZlQMd+Ggunn+7bM4K7KaL4jBZZ+BKVoU="
+        }
+      ]
+    },
+    {
+      "Route": "styles.hvhjakbvxp.css",
+      "AssetFile": "C:\\Users\\Eduardo\\Desktop\\Estudos - Backfront-end\\LoginAPI\\wwwroot\\styles.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3409"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"w5Q4w7X6vbqZlQMd+Ggunn+7bM4K7KaL4jBZZ+BKVoU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 02 May 2025 12:27:38 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "hvhjakbvxp"
+        },
+        {
+          "Name": "label",
+          "Value": "styles.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-w5Q4w7X6vbqZlQMd+Ggunn+7bM4K7KaL4jBZZ+BKVoU="
+        }
+      ]
+    }
+  ]
+}

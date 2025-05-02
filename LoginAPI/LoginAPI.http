@@ -1,0 +1,21 @@
+﻿@host = https://localhost:7150
+
+### 🟢 REGISTRO DE USUÁRIO
+POST {{host}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "teste@teste.com",
+  "password": "123456"
+}
+
+###
+
+### 🟡 LOGIN DE USUÁRIO
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "teste@teste.com",
+  "password": "123456"
+}

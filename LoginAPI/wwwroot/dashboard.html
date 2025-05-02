@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard do Usuário</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        .dashboard-container {
+            margin-top: 80px;
+            text-align: center;
+        }
+
+        .user-email {
+            font-weight: bold;
+            color: #333;
+            margin-top: 10px;
+        }
+
+        .top-bar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 999;
+        }
+
+        #logoutBtn {
+            font-size: 20px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: #444;
+        }
+
+            #logoutBtn:hover {
+                color: #dc3545;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <span id="userEmail" class="user-email"></span>
+        <button id="logoutBtn" title="Sair">🔓</button>
+    </div>
+
+    <div class="dashboard-container">
+        <h2>Bem-vindo à sua dashboard!</h2>
+        <p>Você está logado como usuário comum.</p>
+    </div>
+
+    <script>
+        window.addEventListener("DOMContentLoaded", () => {
+            const email = localStorage.getItem("loggedEmail");
+            const emailSpan = document.getElementById("userEmail");
+
+            if (emailSpan && email) {
+                emailSpan.textContent = email;
+            }
+
+            document.getElementById("logoutBtn").addEventListener("click", () => {
+                localStorage.removeItem("loggedEmail");
+                window.location.href = "/index.html";
+            });
+        });
+    </script>
+</body>
+</html>

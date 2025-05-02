@@ -1,0 +1,223 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <title>Painel Admin</title>
+    <link rel="stylesheet" href="/styles.css">
+
+    <style>
+        .user-list {
+            margin-top: 30px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .user {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            flex-wrap: wrap;
+        }
+
+            .user span {
+                font-weight: bold;
+                color: #333;
+                flex: 1;
+            }
+
+            .user div {
+                display: flex;
+                gap: 6px;
+            }
+
+            .user button {
+                border: none;
+                color: white;
+                padding: 6px 10px;
+                border-radius: 6px;
+                cursor: pointer;
+            }
+
+                .user button.edit {
+                    background-color: #007bff;
+                }
+
+                .user button.password {
+                    background-color: #28a745;
+                }
+
+                .user button.delete {
+                    background-color: #dc3545;
+                }
+
+        .top-bar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-email {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        #logoutBtn {
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: #444;
+            transition: color 0.2s ease;
+            padding: 6px;
+        }
+
+            #logoutBtn:hover {
+                color: #dc3545;
+            }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <span id="adminEmail" class="admin-email" style="display:inline-block;">...</span>
+        <button id="logoutBtn" title="Logout">🔓</button>
+    </div>
+
+    <div class="main-container">
+        <h2>Painel Administrativo</h2>
+        <div id="response" class="response"></div>
+        <div id="userList" class="user-list"></div>
+    </div>
+
+    <script>
+        const apiUrl = "https://localhost:7150/api/auth";
+
+        const showResponse = (message, isSuccess = true) => {
+            const resp = document.getElementById("response");
+            resp.classList.remove("success", "error");
+            resp.classList.add("response", isSuccess ? "success" : "error");
+            resp.textContent = message;
+            resp.style.display = "block";
+
+            setTimeout(() => {
+                resp.style.display = "none";
+                resp.textContent = "";
+                resp.classList.remove("success", "error");
+            }, 3000);
+        };
+
+        const loadUsers = async () => {
+            try {
+                const res = await fetch(`${apiUrl}/all`, {
+                    method: "GET",
+                    headers: { "admin": "true" }
+                });
+
+                const text = await res.text();
+                if (!res.ok) throw new Error("Erro ao carregar usuários: " + text);
+
+                const users = JSON.parse(text);
+                const list = document.getElementById("userList");
+                list.innerHTML = "";
+
+                users.forEach(user => {
+                    const div = document.createElement("div");
+                    div.className = "user";
+
+                    div.innerHTML = `
+                            <span>${user.email} ${user.isAdmin ? "(admin)" : ""}</span>
+                            <div>
+                                <button class="edit" onclick="editEmail(${user.id})">Editar Email</button>
+                                <button class="password" onclick="editPassword(${user.id})">Editar Senha</button>
+                                ${!user.isAdmin ? `<button class="delete" onclick="deleteUser(${user.id})">Excluir</button>` : ""}
+                            </div>
+                        `;
+
+                    list.appendChild(div);
+                });
+            } catch (error) {
+                console.error("Erro ao carregar usuários:", error);
+                showResponse("Erro ao buscar usuários", false);
+            }
+        };
+
+        const deleteUser = async (id) => {
+            if (!confirm("Tem certeza que deseja excluir este usuário?")) return;
+
+            const res = await fetch(`${apiUrl}/${id}`, {
+                method: "DELETE",
+                headers: { "admin": "true" }
+            });
+
+            const text = await res.text();
+            showResponse(text, res.ok);
+            if (res.ok) loadUsers();
+        };
+
+        const editEmail = async (id) => {
+            const newEmail = prompt("Novo email:");
+            if (!newEmail) return;
+
+            const res = await fetch(`${apiUrl}/${id}/email`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "admin": "true"
+                },
+                body: JSON.stringify({ email: newEmail })
+            });
+
+            const text = await res.text();
+            showResponse(text, res.ok);
+            if (res.ok) loadUsers();
+        };
+
+        const editPassword = async (id) => {
+            const newPassword = prompt("Nova senha:");
+            if (!newPassword) return;
+
+            const res = await fetch(`${apiUrl}/${id}/password`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "admin": "true"
+                },
+                body: JSON.stringify({ password: newPassword })
+            });
+
+            const text = await res.text();
+            showResponse(text, res.ok);
+            if (res.ok) loadUsers();
+        };
+
+        // Ao carregar a página
+        window.addEventListener("DOMContentLoaded", () => {
+
+            loadUsers();
+
+            const email = localStorage.getItem("loggedEmail");
+            if (email) {
+                const emailSpan = document.getElementById("adminEmail");
+                if (emailSpan) {
+                    emailSpan.textContent = email;
+                }
+            }
+
+            document.getElementById("logoutBtn").addEventListener("click", () => {
+                localStorage.removeItem("loggedEmail");
+                window.location.href = "/index.html";
+            });
+        });
+
+    </script>
+</body>
+</html>

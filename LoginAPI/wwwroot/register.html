@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        .register-container {
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            margin: 100px auto;
+            text-align: center;
+        }
+
+            .register-container h2 {
+                margin-bottom: 24px;
+            }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            border: none;
+            color: white;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+            button:hover {
+                background-color: #0056b3;
+            }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .success-message {
+            color: #28a745;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <h2>Crie sua conta</h2>
+        <form id="registerForm">
+            <input type="email" id="email" placeholder="Email" required />
+            <input type="password" id="password" placeholder="Senha (mín. 6 caracteres)" required />
+            <div id="message" class="error-message"></div>
+            <button type="submit">Cadastrar</button>
+        </form>
+    </div>
+
+    <script>
+        const apiUrl = "https://localhost:7150/api/auth";
+
+        document.getElementById("registerForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
+            const messageDiv = document.getElementById("message");
+
+            // Validação
+            if (!email.includes("@") || !email.includes(".")) {
+                messageDiv.textContent = "Insira um email válido.";
+                return;
+            }
+
+            if (password.length < 6) {
+                messageDiv.textContent = "A senha deve ter pelo menos 6 caracteres.";
+                return;
+            }
+
+            // Requisição para API
+            try {
+                const res = await fetch(`${apiUrl}/register`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const text = await res.text();
+
+                if (!res.ok) {
+                    messageDiv.textContent = text;
+                    messageDiv.className = "error-message";
+                } else {
+                    messageDiv.textContent = "Cadastro realizado com sucesso! Redirecionando...";
+                    messageDiv.className = "success-message";
+
+                    // Aguarda 2 segundos e redireciona
+                    setTimeout(() => {
+                        window.location.href = "/index.html";
+                    }, 2000);
+                }
+
+            } catch (error) {
+                messageDiv.textContent = "Erro ao conectar com o servidor.";
+                messageDiv.className = "error-message";
+            }
+        });
+    </script>
+</body>
+</html>
