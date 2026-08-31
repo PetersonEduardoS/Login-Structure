@@ -1,6 +1,6 @@
-﻿@host = https://localhost:7150
+@host = https://localhost:7150
 
-### 🟢 REGISTRO DE USUÁRIO
+### 🟢 REGISTER USER
 POST {{host}}/api/auth/register
 Content-Type: application/json
 
@@ -11,7 +11,7 @@ Content-Type: application/json
 
 ###
 
-### 🟡 LOGIN DE USUÁRIO
+### 🟡 LOGIN USER
 POST {{host}}/api/auth/login
 Content-Type: application/json
 
