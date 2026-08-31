@@ -1,4 +1,4 @@
-﻿* {
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -11,7 +11,7 @@ html, body {
     position: relative;
 }
 
-/* Container principal */
+/* Main container */
 .main-container {
     display: flex;
     flex-direction: column;
@@ -19,13 +19,13 @@ html, body {
     padding-top: 80px;
 }
 
-/* Título */
+/* Title */
 h2 {
     color: #333;
     margin: 20px 0 10px;
 }
 
-/* Formulários */
+/* Forms */
 form {
     background: #fff;
     padding: 25px;
@@ -70,7 +70,7 @@ button {
         transform: translateY(-1px);
     }
 
-/* Mensagem de resposta */
+/* Response message */
 .response {
     font-weight: bold;
     margin-top: 15px;
@@ -100,7 +100,7 @@ button {
         opacity: 1;
     }
 
-/* Alerta flutuante */
+/* Floating alert */
 .alert-box {
     position: fixed;
     top: 20px;
@@ -134,7 +134,7 @@ button {
         display: none;
     }
 
-/* Botão de logout fixado no topo direito */
+/* Logout button fixed to the top-right */
 .top-bar {
     position: fixed;
     top: 20px;
@@ -143,11 +143,11 @@ button {
     display: flex;
     justify-content: flex-end;
     width: 100%;
-    pointer-events: none; /* para não interceptar clique fora do botão */
+    pointer-events: none; /* so it doesn't intercept clicks outside the button */
 }
 
 #logoutBtn {
-    pointer-events: all; /* permite clique no botão */
+    pointer-events: all; /* allows clicking the button */
     background: none;
     border: none;
     font-size: 22px;
@@ -171,7 +171,7 @@ button {
         color: #dc3545;
     }
 
-/* Responsivo */
+/* Responsive */
 @media (max-width: 400px) {
     form {
         width: 90%;
