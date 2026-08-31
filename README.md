@@ -1,20 +1,20 @@
 # Login-Structure
 
-API de autenticacao em ASP.NET Core, com cadastro e login de usuarios via Entity Framework Core.
+Authentication API in ASP.NET Core, with user registration and login via Entity Framework Core.
 
-## Tecnologias
+## Tech
 
 - ASP.NET Core 8
 - Entity Framework Core + SQLite
-- Autenticacao baseada em token (JWT)
+- Token-based authentication (JWT)
 
-## Estrutura
+## Structure
 
 - `Controllers/AuthController.cs`
 - `Models/User.cs`
 - `Data/`, `Migrations/`
 
-## Como rodar
+## How to run
 
 ```
 cd LoginAPI
@@ -22,4 +22,4 @@ dotnet ef database update
 dotnet run
 ```
 
-> Projeto em desenvolvimento.
+> Work in progress.
