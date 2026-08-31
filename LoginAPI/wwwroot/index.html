@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -160,7 +160,7 @@
                 showResponse("Login: " + text, res.ok);
 
                 if (res.ok) {
-                    localStorage.setItem("loggedEmail", email); // Salva o e-mail no navegador
+                    localStorage.setItem("loggedEmail", email); // Save the email in the browser
 
                     if (email === "admin@admin.com") {
                         window.location.href = "/admin.html";
@@ -172,8 +172,8 @@
             }
 
             catch (error) {
-                console.error("Erro no login:", error);
-                showResponse("Erro ao conectar com o servidor.", false);
+                console.error("Login error:", error);
+                showResponse("Error connecting to the server.", false);
             }
         });
     </script>
