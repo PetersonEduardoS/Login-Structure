@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using LoginAPI.Models;
 using LoginAPI.Data;
 using BCrypt.Net;
@@ -21,7 +21,7 @@ namespace LoginAPI.Controllers
         {
             if (_context.Users.Any(u => u.Email == request.Email))
             {
-                return BadRequest("Usuário já existe.");
+                return BadRequest("User already exists.");
             }
 
             string passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
@@ -30,14 +30,14 @@ namespace LoginAPI.Controllers
             {
                 Email = request.Email,
                 PasswordHash = passwordHash,
-                //IsAdmin = request.Email == "admin@admin.com" // ⚠️ apenas esse e-mail será admin
+                //IsAdmin = request.Email == "admin@admin.com" // ⚠️ only this email becomes admin
             };
 
 
             _context.Users.Add(user);
             _context.SaveChanges();
 
-            return Ok("Usuário registrado com sucesso.");
+            return Ok("User registered successfully.");
         }
 
         [HttpPost("login")]
@@ -47,10 +47,10 @@ namespace LoginAPI.Controllers
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
             {
-                return BadRequest("Credenciais inválidas.");
+                return BadRequest("Invalid credentials.");
             }
 
-            return Ok("Login realizado com sucesso.");
+            return Ok("Login successful.");
         }
         [HttpGet("all")]
         public IActionResult GetAllUsers()
@@ -58,7 +58,7 @@ namespace LoginAPI.Controllers
             var isAdmin = HttpContext.Request.Headers["admin"].ToString() == "true";
 
             if (!isAdmin)
-                return Unauthorized("Acesso negado.");
+                return Unauthorized("Access denied.");
 
             var users = _context.Users.Select(u => new
             {
@@ -74,28 +74,28 @@ namespace LoginAPI.Controllers
         public IActionResult UpdateEmail(int id, [FromBody] UpdateEmailDto dto)
         {
             var isAdmin = Request.Headers["admin"] == "true";
-            if (!isAdmin) return Unauthorized("Acesso negado.");
+            if (!isAdmin) return Unauthorized("Access denied.");
 
             var user = _context.Users.Find(id);
-            if (user == null) return NotFound("Usuário não encontrado.");
+            if (user == null) return NotFound("User not found.");
 
             user.Email = dto.Email;
             _context.SaveChanges();
-            return Ok("Email atualizado.");
+            return Ok("Email updated.");
         }
 
         [HttpPut("{id}/password")]
         public IActionResult UpdatePassword(int id, [FromBody] UpdatePasswordDto dto)
         {
             var isAdmin = Request.Headers["admin"] == "true";
-            if (!isAdmin) return Unauthorized("Acesso negado.");
+            if (!isAdmin) return Unauthorized("Access denied.");
 
             var user = _context.Users.Find(id);
-            if (user == null) return NotFound("Usuário não encontrado.");
+            if (user == null) return NotFound("User not found.");
 
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
             _context.SaveChanges();
-            return Ok("Senha atualizada.");
+            return Ok("Password updated.");
         }
 
         [HttpDelete("{id}")]
@@ -104,17 +104,17 @@ namespace LoginAPI.Controllers
             var isAdmin = HttpContext.Request.Headers["admin"].ToString() == "true";
 
             if (!isAdmin)
-                return Unauthorized("Acesso negado.");
+                return Unauthorized("Access denied.");
 
             var user = _context.Users.FirstOrDefault(u => u.Id == id);
 
             if (user == null)
-                return NotFound("Usuário não encontrado.");
+                return NotFound("User not found.");
 
             _context.Users.Remove(user);
             _context.SaveChanges();
 
-            return Ok("Usuário excluído com sucesso.");
+            return Ok("User deleted successfully.");
         }
 
         public class UpdateEmailDto
