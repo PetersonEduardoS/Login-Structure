@@ -1,6 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using LoginAPI.Models;
 using LoginAPI.Data;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using BCrypt.Net;
 
 namespace LoginAPI.Controllers
@@ -10,10 +15,12 @@ namespace LoginAPI.Controllers
     public class AuthController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IConfiguration _config;
 
-        public AuthController(AppDbContext context)
+        public AuthController(AppDbContext context, IConfiguration config)
         {
             _context = context;
+            _config = config;
         }
 
         [HttpPost("register")]
@@ -29,8 +36,9 @@ namespace LoginAPI.Controllers
             var user = new User
             {
                 Email = request.Email,
-                PasswordHash = passwordHash,
-                //IsAdmin = request.Email == "admin@admin.com" // ⚠️ only this email becomes admin
+                PasswordHash = passwordHash
+                // IsAdmin defaults to false. Promote users via PUT /api/Auth/{id}/role,
+                // which requires an existing Admin to be authenticated.
             };
 
 
@@ -50,16 +58,38 @@ namespace LoginAPI.Controllers
                 return BadRequest("Invalid credentials.");
             }
 
-            return Ok("Login successful.");
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, user.IsAdmin ? "Admin" : "User")
+            };
+
+            var keyBytes = Encoding.UTF8.GetBytes(_config["Jwt:Key"]!);
+            var signingKey = new SymmetricSecurityKey(keyBytes);
+            var credentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
+
+            var expiresMinutes = double.Parse(_config["Jwt:ExpiresMinutes"] ?? "60");
+
+            var token = new JwtSecurityToken(
+                issuer: _config["Jwt:Issuer"],
+                audience: _config["Jwt:Audience"],
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(expiresMinutes),
+                signingCredentials: credentials
+            );
+
+            return Ok(new
+            {
+                token = new JwtSecurityTokenHandler().WriteToken(token),
+                expiresAt = token.ValidTo
+            });
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpGet("all")]
         public IActionResult GetAllUsers()
         {
-            var isAdmin = HttpContext.Request.Headers["admin"].ToString() == "true";
-
-            if (!isAdmin)
-                return Unauthorized("Access denied.");
-
             var users = _context.Users.Select(u => new
             {
                 u.Id,
@@ -70,12 +100,10 @@ namespace LoginAPI.Controllers
             return Ok(users);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}/email")]
         public IActionResult UpdateEmail(int id, [FromBody] UpdateEmailDto dto)
         {
-            var isAdmin = Request.Headers["admin"] == "true";
-            if (!isAdmin) return Unauthorized("Access denied.");
-
             var user = _context.Users.Find(id);
             if (user == null) return NotFound("User not found.");
 
@@ -84,12 +112,10 @@ namespace LoginAPI.Controllers
             return Ok("Email updated.");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}/password")]
         public IActionResult UpdatePassword(int id, [FromBody] UpdatePasswordDto dto)
         {
-            var isAdmin = Request.Headers["admin"] == "true";
-            if (!isAdmin) return Unauthorized("Access denied.");
-
             var user = _context.Users.Find(id);
             if (user == null) return NotFound("User not found.");
 
@@ -98,14 +124,10 @@ namespace LoginAPI.Controllers
             return Ok("Password updated.");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public IActionResult DeleteUser(int id)
         {
-            var isAdmin = HttpContext.Request.Headers["admin"].ToString() == "true";
-
-            if (!isAdmin)
-                return Unauthorized("Access denied.");
-
             var user = _context.Users.FirstOrDefault(u => u.Id == id);
 
             if (user == null)
@@ -117,6 +139,22 @@ namespace LoginAPI.Controllers
             return Ok("User deleted successfully.");
         }
 
+        // Only an already-authenticated Admin can promote or demote another user.
+        // This is the only supported way to grant IsAdmin - there is no self-service
+        // or registration-time path to becoming an admin.
+        [Authorize(Roles = "Admin")]
+        [HttpPut("{id}/role")]
+        public IActionResult UpdateRole(int id, [FromBody] UpdateRoleDto dto)
+        {
+            var user = _context.Users.Find(id);
+            if (user == null) return NotFound("User not found.");
+
+            user.IsAdmin = dto.IsAdmin;
+            _context.SaveChanges();
+
+            return Ok($"User {user.Email} IsAdmin set to {user.IsAdmin}.");
+        }
+
         public class UpdateEmailDto
         {
             public string Email { get; set; } = string.Empty;
@@ -125,6 +163,11 @@ namespace LoginAPI.Controllers
         public class UpdatePasswordDto
         {
             public string Password { get; set; } = string.Empty;
+        }
+
+        public class UpdateRoleDto
+        {
+            public bool IsAdmin { get; set; }
         }
 
 
