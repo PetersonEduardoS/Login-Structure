@@ -1,3 +1,0 @@
-wwwroot\admin.html
-wwwroot\index.html
-wwwroot\styles.css
