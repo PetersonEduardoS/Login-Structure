@@ -45,7 +45,7 @@ dotnet restore
 
 ### 2. Configure the JWT signing key
 
-The API requires a secret key used to sign and validate JWTs. It is **not** stored in `appsettings.json` or committed to the repo — it must be provided locally via .NET user-secrets (development) or an environment variable (any other environment).
+The API requires a secret key used to sign and validate JWTs. It is **not** stored in `appsettings.json` or committed to the repo: it must be provided locally via .NET user-secrets (development) or an environment variable (any other environment).
 
 Generate a random 256-bit key:
 
@@ -98,10 +98,10 @@ By default the API listens on `http://localhost:5125` (check `Properties/launchS
 
 ## Authentication & authorization
 
-- Passwords are hashed with BCrypt before being stored — plaintext passwords are never persisted.
+- Passwords are hashed with BCrypt before being stored; plaintext passwords are never persisted.
 - `POST /api/Auth/login` returns a signed JWT containing the user's id, email, and role (`Admin` or `User`) as claims.
-- Protected endpoints require an `Authorization: Bearer <token>` header. In Swagger UI, click **Authorize** and paste the token (no need to type `Bearer` — it's added automatically).
-- Admin-only endpoints are enforced server-side with `[Authorize(Roles = "Admin")]`. There is no client-supplied header or field that grants admin access — the role comes only from the `IsAdmin` value stored for that user at the time they log in.
+- Protected endpoints require an `Authorization: Bearer <token>` header. In Swagger UI, click **Authorize** and paste the token (no need to type `Bearer`; it's added automatically).
+- Admin-only endpoints are enforced server-side with `[Authorize(Roles = "Admin")]`. There is no client-supplied header or field that grants admin access: the role comes only from the `IsAdmin` value stored for that user at the time they log in.
 - Tokens expire after `Jwt:ExpiresMinutes` (default 60 minutes). A user must log in again to get a fresh token, e.g. after being promoted to Admin.
 
 ## API reference
@@ -155,7 +155,7 @@ Request body: `{ "password": "NewSecret123!" }`
 
 Request body: `{ "isAdmin": true }`
 
-This is the only supported way to grant `IsAdmin` — there is no self-service or registration-time path to becoming an admin.
+This is the only supported way to grant `IsAdmin`: there is no self-service or registration-time path to becoming an admin.
 
 ### `DELETE /api/Auth/{id}`
 
@@ -171,12 +171,12 @@ Since `PUT /api/Auth/{id}/role` itself requires an authenticated Admin, there is
 2. Stop the app.
 3. Open `LoginAPI/users.db` with a SQLite client (e.g. DB Browser for SQLite, or a VS Code SQLite extension).
 4. In the `Users` table, set `IsAdmin` to `1` for that user's row. Save.
-5. Restart the app and log in again with that user — the new token will carry the `Admin` role.
+5. Restart the app and log in again with that user: the new token will carry the `Admin` role.
 6. From then on, use `PUT /api/Auth/{id}/role` (authenticated as that admin) to promote/demote other users.
 
 ## Known limitations / possible next steps
 
-- No refresh tokens — expired tokens require a full re-login.
+- No refresh tokens: expired tokens require a full re-login.
 - No rate limiting on `login`/`register`.
 - No email verification.
 - No automated tests yet.
