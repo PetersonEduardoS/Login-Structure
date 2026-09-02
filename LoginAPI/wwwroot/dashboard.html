@@ -50,6 +50,12 @@
 
     <script>
         window.addEventListener("DOMContentLoaded", () => {
+            const token = localStorage.getItem("authToken");
+            if (!token) {
+                window.location.href = "/index.html";
+                return;
+            }
+
             const email = localStorage.getItem("loggedEmail");
             const emailSpan = document.getElementById("userEmail");
 
@@ -59,6 +65,7 @@
 
             document.getElementById("logoutBtn").addEventListener("click", () => {
                 localStorage.removeItem("loggedEmail");
+                localStorage.removeItem("authToken");
                 window.location.href = "/index.html";
             });
         });

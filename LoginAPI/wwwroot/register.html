@@ -68,7 +68,7 @@
     </div>
 
     <script>
-        const apiUrl = "https://localhost:7150/api/auth";
+        const apiUrl = "/api/auth"; // relative URL: works no matter which port profile is running
 
         document.getElementById("registerForm").addEventListener("submit", async (e) => {
             e.preventDefault();

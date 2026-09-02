@@ -51,6 +51,10 @@
                     background-color: #28a745;
                 }
 
+                .user button.role {
+                    background-color: #6c757d;
+                }
+
                 .user button.delete {
                     background-color: #dc3545;
                 }
@@ -99,7 +103,13 @@
     </div>
 
     <script>
-        const apiUrl = "https://localhost:7150/api/auth";
+        const apiUrl = "/api/auth"; // relative URL: works no matter which port profile is running
+        const token = localStorage.getItem("authToken");
+
+        const authHeaders = (extra = {}) => ({
+            "Authorization": `Bearer ${token}`,
+            ...extra
+        });
 
         const showResponse = (message, isSuccess = true) => {
             const resp = document.getElementById("response");
@@ -115,12 +125,31 @@
             }, 3000);
         };
 
+        // Returns true if the response was an auth failure and already handled
+        // (401 = not logged in / expired token -> back to login;
+        //  403 = logged in but not an Admin -> show a message and stay).
+        const handleAuthFailure = (status) => {
+            if (status === 401) {
+                localStorage.removeItem("authToken");
+                localStorage.removeItem("loggedEmail");
+                window.location.href = "/index.html";
+                return true;
+            }
+            if (status === 403) {
+                showResponse("You don't have permission to do this.", false);
+                return true;
+            }
+            return false;
+        };
+
         const loadUsers = async () => {
             try {
                 const res = await fetch(`${apiUrl}/all`, {
                     method: "GET",
-                    headers: { "admin": "true" }
+                    headers: authHeaders()
                 });
+
+                if (handleAuthFailure(res.status)) return;
 
                 const text = await res.text();
                 if (!res.ok) throw new Error("Failed to load users: " + text);
@@ -138,6 +167,7 @@
                             <div>
                                 <button class="edit" onclick="editEmail(${user.id})">Edit Email</button>
                                 <button class="password" onclick="editPassword(${user.id})">Edit Password</button>
+                                <button class="role" onclick="toggleRole(${user.id}, ${!user.isAdmin})">${user.isAdmin ? "Remove Admin" : "Make Admin"}</button>
                                 ${!user.isAdmin ? `<button class="delete" onclick="deleteUser(${user.id})">Delete</button>` : ""}
                             </div>
                         `;
@@ -155,8 +185,10 @@
 
             const res = await fetch(`${apiUrl}/${id}`, {
                 method: "DELETE",
-                headers: { "admin": "true" }
+                headers: authHeaders()
             });
+
+            if (handleAuthFailure(res.status)) return;
 
             const text = await res.text();
             showResponse(text, res.ok);
@@ -169,12 +201,11 @@
 
             const res = await fetch(`${apiUrl}/${id}/email`, {
                 method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "admin": "true"
-                },
+                headers: authHeaders({ "Content-Type": "application/json" }),
                 body: JSON.stringify({ email: newEmail })
             });
+
+            if (handleAuthFailure(res.status)) return;
 
             const text = await res.text();
             showResponse(text, res.ok);
@@ -187,12 +218,28 @@
 
             const res = await fetch(`${apiUrl}/${id}/password`, {
                 method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "admin": "true"
-                },
+                headers: authHeaders({ "Content-Type": "application/json" }),
                 body: JSON.stringify({ password: newPassword })
             });
+
+            if (handleAuthFailure(res.status)) return;
+
+            const text = await res.text();
+            showResponse(text, res.ok);
+            if (res.ok) loadUsers();
+        };
+
+        const toggleRole = async (id, makeAdmin) => {
+            const action = makeAdmin ? "grant admin access to" : "remove admin access from";
+            if (!confirm(`Are you sure you want to ${action} this user?`)) return;
+
+            const res = await fetch(`${apiUrl}/${id}/role`, {
+                method: "PUT",
+                headers: authHeaders({ "Content-Type": "application/json" }),
+                body: JSON.stringify({ isAdmin: makeAdmin })
+            });
+
+            if (handleAuthFailure(res.status)) return;
 
             const text = await res.text();
             showResponse(text, res.ok);
@@ -201,6 +248,10 @@
 
         // On page load
         window.addEventListener("DOMContentLoaded", () => {
+            if (!token) {
+                window.location.href = "/index.html";
+                return;
+            }
 
             loadUsers();
 
@@ -214,6 +265,7 @@
 
             document.getElementById("logoutBtn").addEventListener("click", () => {
                 localStorage.removeItem("loggedEmail");
+                localStorage.removeItem("authToken");
                 window.location.href = "/index.html";
             });
         });
